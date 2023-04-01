@@ -1,0 +1,26 @@
+{
+  "name": "card-validation",
+  "version": "1.0.0",
+  "description": "JS card validation package.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vbpupil/card-validation.git"
+  },
+  "keywords": [
+    "credit",
+    "card",
+    "validation",
+    "visa",
+    "mastercard"
+  ],
+  "author": "Dean Haines",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vbpupil/card-validation/issues"
+  },
+  "homepage": "https://github.com/vbpupil/card-validation#readme"
+}
