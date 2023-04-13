@@ -2,7 +2,7 @@
   "name": "card-validation",
   "version": "1.0.0",
   "description": "JS card validation package.",
-  "main": "index.js",
+  "main": "src/CardForm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

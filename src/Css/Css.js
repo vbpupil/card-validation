@@ -1,0 +1,3 @@
+export default class Css {
+    static STYLE = '.card-type-icon,.icon{display:block;margin:auto}:focus{outline:0}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield}input.cp-card-input{border:none;width:100%}.icon{padding-top:2px}.card-wrapper{width:15rem;height:1.5rem;padding:5px;border-radius:5px;display:flex;justify-content:center;align-items:center;border:1px solid;overflow:hidden}.error-wrapper{position: absolute;margin-top: 60px;padding: 2px 5px;color: red;font-size: .9rem;}'
+}
