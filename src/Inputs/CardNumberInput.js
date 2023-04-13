@@ -3,11 +3,9 @@ import CardType from "../CardType/CardType";
 import CardImages from "../Images/CardImages";
 import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
-import KeyFunctions from "../Keyboard/KeyFunctions";
-import Mask from "../Mask/Mask";
 
 export default class CardNumberInput extends Input {
-    _CREDIT_CARD_NUMBER_PLACEHOLDER = "Card Number";
+    _creditCardNumberPlaceholder = "Card Number";
     _class = '.cp-card-input'
     _cardType = null
     _cardTypeIcon = null
@@ -26,13 +24,13 @@ export default class CardNumberInput extends Input {
         }
 
         if (!this.elementHasAttribute(this._cardNumInput, 'placeholder')) {
-            this._cardNumInput.setAttribute("placeholder", this._CREDIT_CARD_NUMBER_PLACEHOLDER);
+            this._cardNumInput.setAttribute("placeholder", this._creditCardNumberPlaceholder);
         }
     }
 
     registerListeners() {
         this._cardNumInput.addEventListener('keydown', this.handleCreditCardNumberKey.bind(this));
-        this._cardNumInput.addEventListener('keyup', this.setCardTypeIcon.bind(this));
+        this._cardNumInput.addEventListener('keyup', this.setCardType.bind(this));
         this._cardNumInput.addEventListener('paste', e => e.preventDefault());
     }
 
@@ -64,10 +62,14 @@ export default class CardNumberInput extends Input {
         this.handleMaskedNumberInputKey(e, this._creditCardNumberMask);
     }
 
-    setCardTypeIcon(event) {
+    setCardType(event) {
         try {
             this.setError('');
-            this._cardType = CardType.cardTypeFromNumber(event.target.value);
+
+            const type = CardType.cardTypeFromNumber(event.target.value);
+
+            this._cardType = type.type;
+            this._creditCardNumberMask = type.mask;
 
             this._cardTypeIcon.innerHTML = CardImages[this._cardType];
         } catch (err) {
@@ -79,6 +81,8 @@ export default class CardNumberInput extends Input {
                 this._cardTypeIcon.innerHTML = CardImages.EXCLAMATION;
                 this.setError('Invalid card number.');
             }
+
+            this._creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
         }
     }
 }
