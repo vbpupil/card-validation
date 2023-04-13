@@ -2,6 +2,13 @@ import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
 
 export default class CardType {
+    static CREDIT_CARD_NUMBER_DEFAULT_MASK    = "XXXX XXXX XXXX XXXX";
+    static CREDIT_CARD_NUMBER_VISA_MASK       = "XXXX XXXX XXXX XXXX";
+    static CREDIT_CARD_NUMBER_MASTERCARD_MASK = "XXXX XXXX XXXX XXXX";
+    static CREDIT_CARD_NUMBER_DISCOVER_MASK   = "XXXX XXXX XXXX XXXX";
+    static CREDIT_CARD_NUMBER_JCB_MASK        = "XXXX XXXX XXXX XXXX";
+    static CREDIT_CARD_NUMBER_AMEX_MASK       = "XXXX XXXXXX XXXXX";
+    static CREDIT_CARD_NUMBER_DINERS_MASK     = "XXXX XXXX XXXX XX";
     static cardTypeFromNumber(number) {
         // Diners - Carte Blanche
         if (/^30[0-5]/.test(number))
@@ -24,7 +31,7 @@ export default class CardType {
             return "VISA_ELECTRON";
 
         // Visa
-        if (/^4[0-9]{12}(?:[0-9]{3})?$/.test(number))
+        if (/^4/.test(number))
             return "VISA";
 
         // Mastercard

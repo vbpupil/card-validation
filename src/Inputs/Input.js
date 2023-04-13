@@ -1,4 +1,5 @@
 import KeyFunctions from "../Keyboard/KeyFunctions";
+import Mask from "../Mask/Mask";
 
 export default class Input {
     _class;
@@ -124,4 +125,80 @@ export default class Input {
 
         return numbersOnlyString;
     };
+
+    elementHasAttribute(element, attributeName) {
+        return element.hasAttribute(attributeName) && element.getAttribute(attributeName) !== '';
+    };
+
+    handleMaskedNumberInputKey(e) {
+        this.filterNumberOnlyKey(e);
+
+        const keyCode = e.which || e.keyCode;
+
+        const element = e.target;
+
+        const caretStart = this.caretStartPosition(element);
+        const caretEnd = this.caretEndPosition(element);
+
+        // Calculate normalised caret position
+        const normalisedStartCaretPosition = this.normaliseCaretPosition(this._creditCardNumberMask, caretStart);
+        const normalisedEndCaretPosition = this.normaliseCaretPosition(this._creditCardNumberMask, caretEnd);
+
+        let newCaretPosition = caretStart;
+
+        const isNumber = KeyFunctions.keyIsNumber(e);
+        const isDelete = KeyFunctions.keyIsDelete(e);
+        const isBackspace = KeyFunctions.keyIsBackspace(e);
+
+        if (isNumber || isDelete || isBackspace) {
+            e.preventDefault();
+
+            const rawText = element.value;
+
+            let numbersOnly = this.numbersOnlyString(rawText);
+
+            const digit = KeyFunctions.digitFromKeyCode(keyCode);
+
+            const rangeHighlighted = normalisedEndCaretPosition > normalisedStartCaretPosition;
+
+            // Remove values highlighted (if highlighted)
+            if (rangeHighlighted) {
+                numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition) + numbersOnly.slice(normalisedEndCaretPosition));
+            }
+
+            // Forward Action
+            if (caretStart !== this._creditCardNumberMask.length) {
+
+                // Insert number digit
+                if (isNumber && rawText.length <= this._creditCardNumberMask.length) {
+                    numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition) + digit + numbersOnly.slice(normalisedStartCaretPosition));
+                    newCaretPosition = Math.max(
+                        this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition + 1),
+                        this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition + 2) - 1
+                    );
+                }
+
+                // Delete
+                if (isDelete) {
+                    numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition) + numbersOnly.slice(normalisedStartCaretPosition + 1));
+                }
+
+            }
+
+            // Backward Action
+            if (caretStart !== 0) {
+                // Backspace
+                if (isBackspace && !rangeHighlighted) {
+                    numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition - 1) + numbersOnly.slice(normalisedStartCaretPosition));
+                    newCaretPosition = this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition - 1);
+                }
+            }
+
+            console.log(numbersOnly);
+
+            this._cardNumInput.value = Mask.applyFormatMask(numbersOnly, this._creditCardNumberMask);
+            this.setCaretPosition(element, newCaretPosition);
+        }
+    };
+
 }
