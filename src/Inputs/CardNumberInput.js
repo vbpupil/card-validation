@@ -3,6 +3,7 @@ import CardType from "../Helpers/CardType";
 import CardImages from "../Helpers/CardImages";
 import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
+import UnsupportedCardTypeError from "../Errors/UnsupportedCardTypeError";
 
 export default class CardNumberInput extends Input {
     _id = 'cp-card-number-input'
@@ -62,9 +63,20 @@ export default class CardNumberInput extends Input {
         this.handleMaskedNumberInputKey(e, this._creditCardNumberMask);
     }
 
-    setCardType(event) {
+    handleCardChange(e) {
+        const cardDetails = CardType.cardTypeFromNumber(e.target.value);
+
+        if (this._options.excluded_card_providers !== undefined && Array.isArray(this._options.excluded_card_providers)) {
+            if (this._options.excluded_card_providers.indexOf(cardDetails.type) !== -1) {
+                throw new UnsupportedCardTypeError("Unsupported card type: " + cardDetails.type);
+            }
+        }
+        this._cardDetails = cardDetails;
+    }
+
+    setCardType(e) {
         try {
-            this._cardDetails = CardType.cardTypeFromNumber(event.target.value);
+            this.handleCardChange(e)
 
             this.emitCardChange(this._cardDetails);
 
@@ -75,6 +87,10 @@ export default class CardNumberInput extends Input {
         } catch (err) {
             if (err instanceof UnknownCardTypeError) {
                 this._cardTypeIcon.innerHTML = '';
+            }
+
+            if (err instanceof UnsupportedCardTypeError) {
+                this.setError('ERROR', {input: this._id, message: err.message});
             }
 
             if (err instanceof InvalidCardNumberError) {

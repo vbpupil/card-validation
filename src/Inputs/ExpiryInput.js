@@ -1,10 +1,5 @@
 import Input from "./Input";
-import CardType from "../Helpers/CardType";
 import CardImages from "../Helpers/CardImages";
-import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
-import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
-import Mask from "../Helpers/Mask";
-import Card from "../Helpers/Card";
 
 export default class ExpiryInput extends Input {
     _id = 'cp-card-expiry-input'

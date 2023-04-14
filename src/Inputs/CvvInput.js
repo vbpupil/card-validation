@@ -1,8 +1,6 @@
 import Input from "./Input";
 import CardType from "../Helpers/CardType";
 import CardImages from "../Helpers/CardImages";
-import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
-import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
 
 export default class CvvInput extends Input {
     _id = 'cp-card-cvv-input'

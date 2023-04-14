@@ -1,8 +1,5 @@
 import Input from "./Input";
-import CardType from "../Helpers/CardType";
 import CardImages from "../Helpers/CardImages";
-import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
-import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
 
 export default class NameInput extends Input {
     _placeholder = "Name On Card";
