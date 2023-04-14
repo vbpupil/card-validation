@@ -9,8 +9,8 @@ export default class NameInput extends Input {
 
     _id = 'cp-card-name-input'
 
-    constructor(formWrapper) {
-        super(formWrapper);
+    constructor(formWrapper, options) {
+        super(formWrapper, options);
 
         if (!this.init())
             return;
@@ -37,11 +37,14 @@ export default class NameInput extends Input {
 
         wrapper.id = 'name-wrapper';
 
-        const cardIcon = document.createElement('div');
-        cardIcon.classList.add('cp-icon');
-        cardIcon.innerHTML += CardImages.USER_ICON;
+        if (this._options?.show_name_icon && this._options.show_name_icon === true) {
+            const cardIcon = document.createElement('div');
+            cardIcon.classList.add('cp-icon');
+            cardIcon.innerHTML += CardImages.USER_ICON;
+            wrapper.append(cardIcon);
+        }
 
-        wrapper.append(cardIcon, this._cardNameInput);
+        wrapper.append( this._cardNameInput);
 
         this._formWrapper.append(wrapper);
     }

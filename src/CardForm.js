@@ -5,6 +5,7 @@ import ExpiryInput from "./Inputs/ExpiryInput";
 import CvvInput from "./Inputs/CvvInput";
 
 export default class CardForm {
+    _options = {};
     _formWrapper = null;
     _cardNumInput = null;
     _cardNameInput = null;
@@ -12,25 +13,28 @@ export default class CardForm {
     _cardCVVInput = null;
     _errors = {}
 
-    constructor() {
+    constructor(options = {}) {
+        this._options = options;
+
         this.initialiseForm();
+
         this.injectCss();
     }
 
     initialiseForm() {
-        this.constructForm();
+        this._formWrapper = document.getElementById('cp-form-wrapper');
 
-        this._cardNumInput = new CardNumberInput(this._formWrapper);
-        this._cardNameInput = new NameInput(this._formWrapper);
-        this._cardExpiryInput = new ExpiryInput(this._formWrapper);
-        this._cardCVVInput = new CvvInput(this._formWrapper);
-    }
+        this._cardNumInput = new CardNumberInput(this._formWrapper, this._options);
 
-    constructForm() {
-        this._formWrapper = document.createElement('div');
-        this._formWrapper.id = 'cp-form-wrapper'
+        const inlineWrapper = document.createElement('div');
+        inlineWrapper.id = 'cp-inline-wrapper';
 
-        document.body.append(this._formWrapper);
+        this._formWrapper.append(inlineWrapper);
+
+        this._cardExpiryInput = new ExpiryInput(inlineWrapper, this._options);
+        this._cardCVVInput = new CvvInput(inlineWrapper, this._options);
+
+        this._cardNameInput = new NameInput(this._formWrapper, this._options);
     }
 
     injectCss() {

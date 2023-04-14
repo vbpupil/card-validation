@@ -12,8 +12,8 @@ export default class CvvInput extends Input {
 
     _creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
 
-    constructor(formWrapper) {
-        super(formWrapper);
+    constructor(formWrapper, options) {
+        super(formWrapper, options);
 
         if (!this.init())
             return;
@@ -45,11 +45,14 @@ export default class CvvInput extends Input {
         this._cardTypeIcon = document.createElement('div');
         this._cardTypeIcon.classList.add('card-type-icon');
 
-        const cardIcon = document.createElement('div');
-        cardIcon.classList.add('cp-icon');
-        cardIcon.innerHTML += CardImages.LOCK_ICON;
+        if (this._options?.show_cvv_icon && this._options.show_cvv_icon === true) {
+            const cardIcon = document.createElement('div');
+            cardIcon.classList.add('cp-icon');
+            cardIcon.innerHTML += CardImages.LOCK_ICON;
+            wrapper.append(cardIcon);
+        }
 
-        wrapper.append(cardIcon, this._cardNumInput);
+        wrapper.append(this._cardNumInput);
 
         this._formWrapper.append(wrapper);
     }

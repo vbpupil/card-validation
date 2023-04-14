@@ -12,8 +12,8 @@ export default class ExpiryInput extends Input {
 
     _creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
 
-    constructor(formWrapper) {
-        super(formWrapper);
+    constructor(formWrapper, options) {
+        super(formWrapper, options);
 
         if (!this.init())
             return;
@@ -42,11 +42,14 @@ export default class ExpiryInput extends Input {
 
         wrapper.id = 'expiry-wrapper';
 
-        const cardIcon = document.createElement('div');
-        cardIcon.classList.add('cp-icon');
-        cardIcon.innerHTML += CardImages.CALENDAR_ICON;
+        if (this._options?.show_expiry_icon && this._options.show_expiry_icon === true) {
+            const cardIcon = document.createElement('div');
+            cardIcon.classList.add('cp-icon');
+            cardIcon.innerHTML += CardImages.CALENDAR_ICON;
+            wrapper.append(cardIcon);
+        }
 
-        wrapper.append(cardIcon, this._cardNumInput);
+        wrapper.append(this._cardNumInput);
 
         this._formWrapper.append(wrapper);
     }

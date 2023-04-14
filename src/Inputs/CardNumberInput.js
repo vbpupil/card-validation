@@ -12,8 +12,8 @@ export default class CardNumberInput extends Input {
 
     _creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
 
-    constructor(formWrapper) {
-        super(formWrapper);
+    constructor(formWrapper, options) {
+        super(formWrapper, options);
 
         if (!this.init())
             return;
@@ -40,16 +40,19 @@ export default class CardNumberInput extends Input {
 
         const wrapper = document.createElement('div');
 
-        wrapper.id = 'card-wrapper';
+        wrapper.id = 'card-number-wrapper';
 
         this._cardTypeIcon = document.createElement('div');
         this._cardTypeIcon.id = 'card-type-icon';
 
-        const cardIcon = document.createElement('div');
-        cardIcon.classList.add('cp-icon');
-        cardIcon.innerHTML += CardImages.CARD_ICON;
+        if (this._options?.show_card_number_icon && this._options.show_card_number_icon === true) {
+            const cardIcon = document.createElement('div');
+            cardIcon.classList.add('cp-icon');
+            cardIcon.innerHTML += CardImages.CARD_ICON;
+            wrapper.append(cardIcon);
+        }
 
-        wrapper.append(cardIcon, this._cardNumInput, this._cardTypeIcon);
+        wrapper.append(this._cardNumInput, this._cardTypeIcon);
 
         this._formWrapper.append(wrapper);
     }

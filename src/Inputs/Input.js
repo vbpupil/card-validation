@@ -2,12 +2,16 @@ import KeyFunctions from "../Helpers/KeyFunctions";
 import Mask from "../Helpers/Mask";
 
 export default class Input {
+    _options = {};
+
     _id;
     _requiredMethods = ['registerListeners', 'constructInput'];
 
     _formWrapper
 
-    constructor(formWrapper) {
+    constructor(formWrapper, options) {
+        this._options = options;
+
         this._formWrapper = formWrapper;
 
         if (new.target === Input) {
@@ -31,10 +35,6 @@ export default class Input {
         this.registerListeners();
 
         return true;
-    }
-
-    appendToForm(){
-        console.log('append to form')
     }
 
     setError(type = 'error', message, data = {}) {
