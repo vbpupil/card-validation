@@ -2,10 +2,14 @@ import KeyFunctions from "../Helpers/KeyFunctions";
 import Mask from "../Helpers/Mask";
 
 export default class Input {
-    _class;
-    _requiredMethods = ['registerListeners', 'setWrapper'];
+    _id;
+    _requiredMethods = ['registerListeners', 'constructInput'];
 
-    constructor() {
+    _formWrapper
+
+    constructor(formWrapper) {
+        this._formWrapper = formWrapper;
+
         if (new.target === Input) {
             throw new TypeError("Cannot construct Input instances directly.");
         }
@@ -18,17 +22,37 @@ export default class Input {
     }
 
     init() {
-        if (!document.querySelector(this._class)) {
-            console.error(`Unable to locate input with class of ${this._class}, abandoning card validation.`)
+        if (!document.getElementById(this._id)) {
+            console.error(`Unable to locate input with id of ${this._id}, abandoning card validation.`)
             return false;
         }
 
-        this.setWrapper();
+        this.constructInput();
         this.registerListeners();
+
+        return true;
     }
 
-    setError(message) {
-        this._errorMessageContainer.innerHTML = message;
+    appendToForm(){
+        console.log('append to form')
+    }
+
+    setError(type = 'error', message, data = {}) {
+        // console.log(message, type, data)
+
+        let event = new CustomEvent(
+            'cp-form-event',
+            {
+                bubbles: true,
+                cancelable: true,
+                detail: {
+                    type: type,
+                    message: message,
+                    data: data,
+                }
+            });
+
+        window.dispatchEvent(event);
     }
 
     caretStartPosition(element) {
@@ -168,7 +192,6 @@ export default class Input {
 
             // Forward Action
             if (caretStart !== this._creditCardNumberMask.length) {
-
                 // Insert number digit
                 if (isNumber && rawText.length <= this._creditCardNumberMask.length) {
                     numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition) + digit + numbersOnly.slice(normalisedStartCaretPosition));
@@ -182,7 +205,6 @@ export default class Input {
                 if (isDelete) {
                     numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition) + numbersOnly.slice(normalisedStartCaretPosition + 1));
                 }
-
             }
 
             // Backward Action
@@ -193,8 +215,6 @@ export default class Input {
                     newCaretPosition = this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition - 1);
                 }
             }
-
-            console.log(numbersOnly);
 
             this._cardNumInput.value = Mask.applyFormatMask(numbersOnly, this._creditCardNumberMask);
             this.setCaretPosition(element, newCaretPosition);

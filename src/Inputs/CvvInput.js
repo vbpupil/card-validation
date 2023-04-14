@@ -4,9 +4,9 @@ import CardImages from "../Helpers/CardImages";
 import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
 
-export default class CardNumberInput extends Input {
-    _id = 'cp-card-number-input'
-    _placeholder = "Card Number";
+export default class CvvInput extends Input {
+    _id = 'cp-card-cvv-input'
+    _placeholder = "CVV";
     _cardType = null
     _cardTypeIcon = null
 
@@ -40,16 +40,16 @@ export default class CardNumberInput extends Input {
 
         const wrapper = document.createElement('div');
 
-        wrapper.id = 'card-wrapper';
+        wrapper.id = 'cvv-wrapper';
 
         this._cardTypeIcon = document.createElement('div');
-        this._cardTypeIcon.id = 'card-type-icon';
+        this._cardTypeIcon.classList.add('card-type-icon');
 
         const cardIcon = document.createElement('div');
         cardIcon.classList.add('cp-icon');
-        cardIcon.innerHTML += CardImages.CARD_ICON;
+        cardIcon.innerHTML += CardImages.LOCK_ICON;
 
-        wrapper.append(cardIcon, this._cardNumInput, this._cardTypeIcon);
+        wrapper.append(cardIcon, this._cardNumInput);
 
         this._formWrapper.append(wrapper);
     }
@@ -60,6 +60,8 @@ export default class CardNumberInput extends Input {
 
     setCardType(event) {
         try {
+            this.setError('');
+
             const type = CardType.cardTypeFromNumber(event.target.value);
 
             this._cardType = type.type;
@@ -73,7 +75,7 @@ export default class CardNumberInput extends Input {
 
             if (err instanceof InvalidCardNumberError) {
                 this._cardTypeIcon.innerHTML = CardImages.EXCLAMATION;
-                this.setError('ERROR', 'Invalid card number.', {test: 'test'});
+                this.setError('Invalid card number.');
             }
 
             this._creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
