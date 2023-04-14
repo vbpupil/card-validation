@@ -2,20 +2,34 @@
 
 ## How to use
 
-```
-yarn add @vbpupil/card-validation
+### Installation
 
+```
+npm install @vbpupil/card-validation
+
+or 
+
+yarn add @vbpupil/card-validation
+```
+
+### Use
+```
 import CardForm from '@vbpupil/card-validation';
 
+new CardForm();
+```
+
+### Use with options
+
+```
 new CardForm({
     show_card_number_icon: true,
     show_expiry_icon: true,
     show_cvv_icon: true,
     show_name_icon: true,
-    excluded_card_providers: ['VISA'],
+    excluded_card_providers: ['VISA', 'MASTERCARD'],
 });
 ```
-
 Options:
 
 | Option                  | Description                           | Type    | Default |
