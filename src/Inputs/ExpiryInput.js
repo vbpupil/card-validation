@@ -1,5 +1,8 @@
 import Input from "./Input";
 import CardImages from "../Helpers/CardImages";
+import InvalidMonthError from "../Errors/InvalidMonthError";
+import DateFunctions from "../Helpers/DateFunctions";
+import InvalidExpiryError from "../Errors/InvalidExpiryError";
 
 export default class ExpiryInput extends Input {
     _id = 'cp-card-expiry-input'
@@ -49,5 +52,27 @@ export default class ExpiryInput extends Input {
 
     handleExpiryKey(e) {
         this.handleMaskedNumberInputKey(e, this._expiryMask);
+        this.performDateCheck(e.target.value);
+    }
+
+    performDateCheck(date) {
+        if (date.length === 7) {
+            const value = date.match(/^([0-9]{2})\s\/\s([0-9]{2})/);
+            const currentYearLast2 = DateFunctions.getCurrentYear(2);
+
+            if (value[1] && value[2]) {
+                if (value[1] < 1 || value[1] > 12) {
+                    throw new InvalidMonthError('Month must be within range 1-12');
+                }
+
+                if (value[2] < currentYearLast2) {
+                    throw new InvalidExpiryError('Expiry date has passed.');
+                }
+
+                if (value[2] === currentYearLast2 && value[1] < DateFunctions.getCurrentMonth() + 1) {
+                    throw new InvalidExpiryError('Expiry date has passed.');
+                }
+            }
+        }
     }
 }

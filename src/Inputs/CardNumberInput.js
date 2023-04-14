@@ -67,10 +67,11 @@ export default class CardNumberInput extends Input {
         const cardDetails = CardType.cardTypeFromNumber(e.target.value);
 
         if (this._options.excluded_card_providers !== undefined && Array.isArray(this._options.excluded_card_providers)) {
-            if (this._options.excluded_card_providers.indexOf(cardDetails.type) !== -1) {
+            if (this._options.excluded_card_providers.includes(cardDetails.type)) {
                 throw new UnsupportedCardTypeError("Unsupported card type: " + cardDetails.type);
             }
         }
+
         this._cardDetails = cardDetails;
     }
 
