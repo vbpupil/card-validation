@@ -11,68 +11,80 @@ export default class CardType {
     static CREDIT_CARD_NUMBER_DINERS_14_MASK = "XXXX XXXX XXXX XX";
     static CREDIT_CARD_NUMBER_DINERS_MASK = "XXXX XXXX XXXX XXXX";
 
+    static CVC_MASK_3 = "XXX";
+    static CVC_MASK_4 = "XXXX";
+
     static cardTypeFromNumber(number) {
         // Diners - Carte Blanche
         // if (/^30[0-5]/.test(number))
         //     return {
         //         type: 'DINERS_CLUB',
-        //         mask: this.CREDIT_CARD_NUMBER_DINERS_MASK
+        //         mask: this.CREDIT_CARD_NUMBER_DINERS_MASK,
+        // cvv_mask: this.CVC_MASK_3,
         //     }
         //
         // // Diners
         // if (/^(30[6-9]|36|38)/.test(number))
         //     return {
         //         type: 'DINERS_CLUB',
-        //         mask: this.CREDIT_CARD_NUMBER_DINERS_MASK
+        //         mask: this.CREDIT_CARD_NUMBER_DINERS_MASK,
+        // cvv_mask: this.CVC_MASK_3,
         //     }
 
         // Diners
         if (/(30[0-5]|36\d|38\d)\d{11}/.test(number))
             return {
                 type: 'DINERS_CLUB',
-                mask: this.CREDIT_CARD_NUMBER_DINERS_14_MASK
+                mask: this.CREDIT_CARD_NUMBER_DINERS_14_MASK,
+                cvv_mask: this.CVC_MASK_3,
             }
 
         // JCB
         if (/^35(2[89]|[3-8][0-9])/.test(number))
             return {
                 type: 'JCB',
-                mask: this.CREDIT_CARD_NUMBER_JCB_MASK
+                mask: this.CREDIT_CARD_NUMBER_JCB_MASK,
+                cvv_mask: this.CVC_MASK_3,
             }
 
         // AMEX
         if (/^3[47]/.test(number))
             return {
                 type: 'AMEX',
-                mask: this.CREDIT_CARD_NUMBER_AMEX_MASK
+                mask: this.CREDIT_CARD_NUMBER_AMEX_MASK,
+                cvv_mask: this.CVC_MASK_3,
             }
 
         // Visa Electron
         if (/^(4026|417500|4508|4844|491(3|7))/.test(number))
             return {
                 type: 'VISA_ELECTRON',
-                mask: this.CREDIT_CARD_NUMBER_VISA_MASK
+                mask: this.CREDIT_CARD_NUMBER_VISA_MASK,
+                cvv_mask: this.CVC_MASK_3,
             }
 
         // Visa
         if (/^4/.test(number))
             return {
                 type: 'VISA',
-                mask: this.CREDIT_CARD_NUMBER_VISA_MASK
+                mask: this.CREDIT_CARD_NUMBER_VISA_MASK,
+                cvv_mask: this.CVC_MASK_3,
             }
 
         // Mastercard
         if (/^5[1-5]/.test(number))
             return {
                 type: 'MASTERCARD',
-                mask: this.CREDIT_CARD_NUMBER_MASTERCARD_MASK
+                mask: this.CREDIT_CARD_NUMBER_MASTERCARD_MASK,
+                cvv_mask: this.CVC_MASK_4,
             }
 
         // Discover
         if (/^(6011|622(12[6-9]|1[3-9][0-9]|[2-8][0-9]{2}|9[0-1][0-9]|92[0-5]|64[4-9])|65)/.test(number))
             return {
                 type: 'DISCOVER',
-                mask: this.CREDIT_CARD_NUMBER_DISCOVER_MASK
+                mask: this.CREDIT_CARD_NUMBER_DISCOVER_MASK,
+                cvv_mask: this.CVC_MASK_3,
             }
 
         if (number.length >= 16) {

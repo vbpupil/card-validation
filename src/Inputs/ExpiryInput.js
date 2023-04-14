@@ -4,14 +4,12 @@ import CardImages from "../Helpers/CardImages";
 import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
 import Mask from "../Helpers/Mask";
+import Card from "../Helpers/Card";
 
 export default class ExpiryInput extends Input {
     _id = 'cp-card-expiry-input'
     _placeholder = "MM / YY";
-    _cardType = null
-    _cardTypeIcon = null
-
-    _creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
+    _expiryMask = "XX / XX";
 
     constructor(formWrapper, options) {
         super(formWrapper, options);
@@ -19,24 +17,24 @@ export default class ExpiryInput extends Input {
         if (!this.init())
             return;
 
-        if (!this.elementHasAttribute(this._cardNumInput, 'name')) {
-            this._cardNumInput.setAttribute("name", "card-expiry");
+        if (!this.elementHasAttribute(this._input, 'name')) {
+            this._input.setAttribute("name", "card-expiry");
         }
 
-        if (!this.elementHasAttribute(this._cardNumInput, 'placeholder')) {
-            this._cardNumInput.setAttribute("placeholder", this._placeholder);
+        if (!this.elementHasAttribute(this._input, 'placeholder')) {
+            this._input.setAttribute("placeholder", this._placeholder);
         }
     }
 
     registerListeners() {
-        this._cardNumInput.addEventListener('keydown', this.handleExpiryKey.bind(this));
-        this._cardNumInput.addEventListener('paste', e => e.preventDefault());
+        this._input.addEventListener('keydown', this.handleExpiryKey.bind(this));
+        this._input.addEventListener('paste', e => e.preventDefault());
     }
 
     constructInput() {
-        this._cardNumInput = document.getElementById(this._id);
-        this._cardNumInput.removeAttribute('type');
-        this._cardNumInput.setAttribute('type', 'tel');
+        this._input = document.getElementById(this._id);
+        this._input.removeAttribute('type');
+        this._input.setAttribute('type', 'tel');
 
         const wrapper = document.createElement('div');
 
@@ -49,12 +47,12 @@ export default class ExpiryInput extends Input {
             wrapper.append(cardIcon);
         }
 
-        wrapper.append(this._cardNumInput);
+        wrapper.append(this._input);
 
         this._formWrapper.append(wrapper);
     }
 
     handleExpiryKey(e) {
-        this.handleMaskedNumberInputKey(e, Mask.EXPIRY_MASK);
+        this.handleMaskedNumberInputKey(e, this._expiryMask);
     }
 }

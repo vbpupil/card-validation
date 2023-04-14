@@ -1,5 +1,4 @@
 export default class Mask {
-    static EXPIRY_MASK = "XX / XX";
     static applyFormatMask(string, mask) {
         let formattedString = "";
 

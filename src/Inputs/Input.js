@@ -7,7 +7,8 @@ export default class Input {
     _id;
     _requiredMethods = ['registerListeners', 'constructInput'];
 
-    _formWrapper
+    _formWrapper = null;
+    _input = null;
 
     constructor(formWrapper, options) {
         this._options = options;
@@ -37,7 +38,11 @@ export default class Input {
         return true;
     }
 
-    setError(type = 'error',data = {}) {
+    clearInput() {
+        this._input.value = '';
+    }
+
+    setError(type = 'error', data = {}) {
         console.log(type, data)
 
         let event = new CustomEvent(
@@ -215,7 +220,7 @@ export default class Input {
                 }
             }
 
-            this._cardNumInput.value = Mask.applyFormatMask(numbersOnly, mask);
+            this._input.value = Mask.applyFormatMask(numbersOnly, mask);
             this.setCaretPosition(element, newCaretPosition);
         }
     };

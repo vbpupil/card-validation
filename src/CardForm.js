@@ -7,7 +7,7 @@ import CvvInput from "./Inputs/CvvInput";
 export default class CardForm {
     _options = {};
     _formWrapper = null;
-    _cardNumInput = null;
+    _cardNumElement = null;
     _cardNameInput = null;
     _cardExpiryInput = null;
     _cardCVVInput = null;
@@ -24,7 +24,7 @@ export default class CardForm {
     initialiseForm() {
         this._formWrapper = document.getElementById('cp-form-wrapper');
 
-        this._cardNumInput = new CardNumberInput(this._formWrapper, this._options);
+        this._cardNumElement = new CardNumberInput(this._formWrapper, this._options);
 
         const inlineWrapper = document.createElement('div');
         inlineWrapper.id = 'cp-inline-wrapper';

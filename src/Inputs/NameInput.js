@@ -15,23 +15,23 @@ export default class NameInput extends Input {
         if (!this.init())
             return;
 
-        if (!this.elementHasAttribute(this._cardNameInput, 'name')) {
-            this._cardNameInput.setAttribute("name", "card-name");
+        if (!this.elementHasAttribute(this._input, 'name')) {
+            this._input.setAttribute("name", "card-name");
         }
 
-        if (!this.elementHasAttribute(this._cardNameInput, 'placeholder')) {
-            this._cardNameInput.setAttribute("placeholder", this._placeholder);
+        if (!this.elementHasAttribute(this._input, 'placeholder')) {
+            this._input.setAttribute("placeholder", this._placeholder);
         }
     }
 
     registerListeners() {
-        this._cardNameInput.addEventListener('paste', e => e.preventDefault());
+        this._input.addEventListener('paste', e => e.preventDefault());
     }
 
     constructInput() {
-        this._cardNameInput = document.getElementById(this._id);
-        this._cardNameInput.removeAttribute('type');
-        this._cardNameInput.setAttribute('type', 'text');
+        this._input = document.getElementById(this._id);
+        this._input.removeAttribute('type');
+        this._input.setAttribute('type', 'text');
 
         const wrapper = document.createElement('div');
 
@@ -44,7 +44,7 @@ export default class NameInput extends Input {
             wrapper.append(cardIcon);
         }
 
-        wrapper.append( this._cardNameInput);
+        wrapper.append( this._input);
 
         this._formWrapper.append(wrapper);
     }
