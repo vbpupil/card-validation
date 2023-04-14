@@ -37,8 +37,8 @@ export default class Input {
         return true;
     }
 
-    setError(type = 'error', message, data = {}) {
-        // console.log(message, type, data)
+    setError(type = 'error',data = {}) {
+        console.log(type, data)
 
         let event = new CustomEvent(
             'cp-form-event',
@@ -47,7 +47,6 @@ export default class Input {
                 cancelable: true,
                 detail: {
                     type: type,
-                    message: message,
                     data: data,
                 }
             });
@@ -154,7 +153,7 @@ export default class Input {
         return element.hasAttribute(attributeName) && element.getAttribute(attributeName) !== '';
     };
 
-    handleMaskedNumberInputKey(e) {
+    handleMaskedNumberInputKey(e, mask) {
         this.filterNumberOnlyKey(e);
 
         const keyCode = e.which || e.keyCode;
@@ -165,8 +164,8 @@ export default class Input {
         const caretEnd = this.caretEndPosition(element);
 
         // Calculate normalised caret position
-        const normalisedStartCaretPosition = this.normaliseCaretPosition(this._creditCardNumberMask, caretStart);
-        const normalisedEndCaretPosition = this.normaliseCaretPosition(this._creditCardNumberMask, caretEnd);
+        const normalisedStartCaretPosition = this.normaliseCaretPosition(mask, caretStart);
+        const normalisedEndCaretPosition = this.normaliseCaretPosition(mask, caretEnd);
 
         let newCaretPosition = caretStart;
 
@@ -191,13 +190,13 @@ export default class Input {
             }
 
             // Forward Action
-            if (caretStart !== this._creditCardNumberMask.length) {
+            if (caretStart !== mask.length) {
                 // Insert number digit
-                if (isNumber && rawText.length <= this._creditCardNumberMask.length) {
+                if (isNumber && rawText.length <= mask.length) {
                     numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition) + digit + numbersOnly.slice(normalisedStartCaretPosition));
                     newCaretPosition = Math.max(
-                        this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition + 1),
-                        this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition + 2) - 1
+                        this.deNormaliseCaretPosition(mask, normalisedStartCaretPosition + 1),
+                        this.deNormaliseCaretPosition(mask, normalisedStartCaretPosition + 2) - 1
                     );
                 }
 
@@ -212,11 +211,11 @@ export default class Input {
                 // Backspace
                 if (isBackspace && !rangeHighlighted) {
                     numbersOnly = (numbersOnly.slice(0, normalisedStartCaretPosition - 1) + numbersOnly.slice(normalisedStartCaretPosition));
-                    newCaretPosition = this.deNormaliseCaretPosition(this._creditCardNumberMask, normalisedStartCaretPosition - 1);
+                    newCaretPosition = this.deNormaliseCaretPosition(mask, normalisedStartCaretPosition - 1);
                 }
             }
 
-            this._cardNumInput.value = Mask.applyFormatMask(numbersOnly, this._creditCardNumberMask);
+            this._cardNumInput.value = Mask.applyFormatMask(numbersOnly, mask);
             this.setCaretPosition(element, newCaretPosition);
         }
     };

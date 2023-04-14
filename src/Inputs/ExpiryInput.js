@@ -3,6 +3,7 @@ import CardType from "../Helpers/CardType";
 import CardImages from "../Helpers/CardImages";
 import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
+import Mask from "../Helpers/Mask";
 
 export default class ExpiryInput extends Input {
     _id = 'cp-card-expiry-input'
@@ -28,8 +29,7 @@ export default class ExpiryInput extends Input {
     }
 
     registerListeners() {
-        this._cardNumInput.addEventListener('keydown', this.handleCreditCardNumberKey.bind(this));
-        this._cardNumInput.addEventListener('keyup', this.setCardType.bind(this));
+        this._cardNumInput.addEventListener('keydown', this.handleExpiryKey.bind(this));
         this._cardNumInput.addEventListener('paste', e => e.preventDefault());
     }
 
@@ -54,31 +54,7 @@ export default class ExpiryInput extends Input {
         this._formWrapper.append(wrapper);
     }
 
-    handleCreditCardNumberKey(e) {
-        this.handleMaskedNumberInputKey(e, this._creditCardNumberMask);
-    }
-
-    setCardType(event) {
-        try {
-            this.setError('');
-
-            const type = CardType.cardTypeFromNumber(event.target.value);
-
-            this._cardType = type.type;
-            this._creditCardNumberMask = type.mask;
-
-            this._cardTypeIcon.innerHTML = CardImages[this._cardType];
-        } catch (err) {
-            if (err instanceof UnknownCardTypeError) {
-                this._cardTypeIcon.innerHTML = '';
-            }
-
-            if (err instanceof InvalidCardNumberError) {
-                this._cardTypeIcon.innerHTML = CardImages.EXCLAMATION;
-                this.setError('Invalid card number.');
-            }
-
-            this._creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
-        }
+    handleExpiryKey(e) {
+        this.handleMaskedNumberInputKey(e, Mask.EXPIRY_MASK);
     }
 }

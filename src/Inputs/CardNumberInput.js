@@ -76,7 +76,7 @@ export default class CardNumberInput extends Input {
 
             if (err instanceof InvalidCardNumberError) {
                 this._cardTypeIcon.innerHTML = CardImages.EXCLAMATION;
-                this.setError('ERROR', 'Invalid card number.', {test: 'test'});
+                this.setError('ERROR', {input: this._id, message:'Invalid card number.'});
             }
 
             this._creditCardNumberMask = CardType.CREDIT_CARD_NUMBER_DEFAULT_MASK;
