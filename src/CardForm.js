@@ -1,5 +1,5 @@
 import CardNumberInput from "./Inputs/CardNumberInput";
-import Css from "./Css/Css";
+import Css from "./Styles/Css";
 
 export default class CardForm {
     _cardNumInput

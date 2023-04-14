@@ -1,5 +1,5 @@
-import KeyFunctions from "../Keyboard/KeyFunctions";
-import Mask from "../Mask/Mask";
+import KeyFunctions from "../Helpers/KeyFunctions";
+import Mask from "../Helpers/Mask";
 
 export default class Input {
     _class;
@@ -200,5 +200,4 @@ export default class Input {
             this.setCaretPosition(element, newCaretPosition);
         }
     };
-
 }

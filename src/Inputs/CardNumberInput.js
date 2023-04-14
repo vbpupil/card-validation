@@ -1,6 +1,6 @@
 import Input from "./Input";
-import CardType from "../CardType/CardType";
-import CardImages from "../Images/CardImages";
+import CardType from "../Helpers/CardType";
+import CardImages from "../Helpers/CardImages";
 import UnknownCardTypeError from "../Errors/UnknownCardTypeError";
 import InvalidCardNumberError from "../Errors/InvalidCardNumberError";
 
